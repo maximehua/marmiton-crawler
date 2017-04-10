@@ -22,12 +22,16 @@ Meteor.methods({
 
                     recette['name'] = $(".m_title .item span").text();
                     recette['illu'] = $(".m_content_recette_illu img").attr("src");
-                    
+                    recette['url'] = url;
+                    recette['durees'] = {
+                        preparation : $(".m_content_recette_info .preptime").text(),
+                        cuisson : $(".m_content_recette_info .cooktime").text()
+                    };
+
                     var tags = $(".m_bloc_cadre>.m_content_recette_breadcrumb").text();
                     recette['tags'] = tags.split(" - ");
                     _.each(recette['tags'], function(element,index){
                         recette['tags'][index] = element.trim();
-                        console.log(element);
                     });
 
 
@@ -39,6 +43,15 @@ Meteor.methods({
                     $(".m_content_recette_ingredients span").remove();
                     recette['ingredients'] = $(".m_content_recette_ingredients").text().trim();
                     recette['ingredients'] = recette['ingredients'].split("-");
+
+                    _.each(recette['ingredients'], function(element,index){
+                        recette['ingredients'][index] = element.trim();
+                        if (recette['ingredients'][index] === "") {
+                            delete recette['ingredients'][index];
+                        }
+                    });
+
+                    recette['recette'] = $(".m_content_recette_todo").text();
 
                     console.log(recette);
 
