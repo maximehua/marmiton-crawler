@@ -7,10 +7,11 @@ Meteor.startup(function () {
     var c = new Crawler({
         rateLimit: 2000,
         maxConnections: 1,
+        skipDuplicates : true,
         jQuery: {
             name: 'cheerio',
             options: {
-                    normalizeWhitespace: true,
+                normalizeWhitespace: true,
             }
         },
         callback: Meteor.bindEnvironment(function(error, res, done) {
@@ -60,15 +61,18 @@ Meteor.startup(function () {
 
                 Meteor.call("update",recette);
 
-                // var queue = $('.m_footer_sa')[0].children("a");
-                var queue = $('.m_footer_sa').toArray();
-                console.log(queue[0].children("a"));
+                var listLinks = $('a').toArray();
+                var queue = [];
 
-                // _.each(queue, function(element){
-                //     console.log(element);
-                // });
-                c.queue([
-                ])
+                _.each(listLinks, function(element){
+                    if ( typeof element.attribs.href !== 'undefined') {
+                        if (element.attribs.href.search("org/recettes/recette") >= 0 ) {
+                            queue.push(element.attribs.href);
+                        }
+                    }
+                });
+
+                c.queue(queue)
             }
             else {
                 console.log("ce n'est pas une recette");
@@ -79,7 +83,7 @@ Meteor.startup(function () {
 
     c.queue([
         'http://www.marmiton.org/recettes/recette_tarte-tatin-a-la-papaye_30690.aspx'
-    ])
+        ])
 });
 
 
@@ -90,7 +94,7 @@ Meteor.methods({
             { url: recette.url},
             { $set: recette},
             { upsert : true,}
-        );
+            );
 
     },
 })
