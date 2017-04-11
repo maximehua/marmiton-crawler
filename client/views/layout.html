@@ -1,0 +1,31 @@
+<template name="layout">
+	<main class="ui cards">
+
+      {{#each recipe}}
+		<div class="ui card">
+			<div class="image">
+				<img src="{{illu}}">
+			</div>
+			<div class="content">
+				<span class="right floated">
+					<i class="heart outline like icon"></i>
+					{{ note }}
+				</span>
+
+
+				<a class="header" href="{{url}}">{{name}}</a>
+				<div class="meta">
+					<a> {{ tags }}</a>
+				</div>
+				<div class="description">
+					<p>{{ingredients}}</p>
+				</div>
+			</div>
+			<div class="extra content">
+				{{durees.preparation}} <i class="heart outline like icon"></i>
+				{{durees.cuisson}} <i class="heart outline like icon"></i>
+			</div>
+		</div>
+		{{/each}}
+	</main>
+</template>
