@@ -5,7 +5,7 @@ Meteor.startup(function () {
     var Crawler = require('crawler');
 
     var c = new Crawler({
-        rateLimit: 2000,
+        rateLimit: ,
         maxConnections: 1,
         skipDuplicates : true,
         jQuery: {
