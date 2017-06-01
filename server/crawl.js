@@ -5,7 +5,7 @@ Meteor.startup(function () {
     var Crawler = require('crawler');
 
     var c = new Crawler({
-        rateLimit: 30000,
+        rateLimit: 1000,
         maxConnections: 1,
         skipDuplicates : true,
         jQuery: {
@@ -55,7 +55,16 @@ Meteor.startup(function () {
                         delete recette['ingredients'][index];
                     }
                 });
+
                 recette['ingredients'] = recette['ingredients'].filter(String);
+                recette['recette'] = $(".m_content_recette_todo").text().trim();
+
+                if (typeof recette['illu']!= 'undefined'){
+                  Meteor.call("update",recette);
+                }
+                else {
+                  console.log('Y a pas dimage');
+                }
 
                 recette['recette'] = $(".m_content_recette_todo").text().trim();
 
